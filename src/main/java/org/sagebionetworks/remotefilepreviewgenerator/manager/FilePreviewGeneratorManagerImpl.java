@@ -37,7 +37,7 @@ public class FilePreviewGeneratorManagerImpl implements FilePreviewGeneratorMana
 	}
 	
 	@Override
-	public void generateFilePreview(String srcKey, String destKey) {
+	public void generateFilePreview(String srcBucketName, String srcKey, String destBucketName, String destKey) {
 		log.debug("In FilePreviewGeneratorManager.generateFilePreview().");
 		//	Download source file from S3
 		File tmpDir = Files.createTempDir();
