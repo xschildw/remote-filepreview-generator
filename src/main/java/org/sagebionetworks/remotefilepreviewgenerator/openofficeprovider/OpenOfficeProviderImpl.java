@@ -9,7 +9,7 @@ import com.google.inject.Singleton;
 @Singleton
 public class OpenOfficeProviderImpl {
 	
-	public static synchronized void initialize()  throws Exception {
+	public synchronized void initialize()  throws Exception {
 		throw new UnsupportedOperationException("Not implemented yet...");
 	}
 }
