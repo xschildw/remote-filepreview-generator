@@ -8,6 +8,7 @@ public class FilePreviewGeneratorServletModule extends ServletModule {
 	protected void configureServlets() {
 		super.configureServlets();
 		// Bind the path to the preview generation servlet.
+		serve("/health").with(HealthCheckServlet.class);
 		serve("/preview").with(FilePreviewGeneratorServlet.class);
 	}
 }

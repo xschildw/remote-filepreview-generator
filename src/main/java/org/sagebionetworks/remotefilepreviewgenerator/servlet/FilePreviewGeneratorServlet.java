@@ -27,51 +27,45 @@ public class FilePreviewGeneratorServlet extends HttpServlet {
 	}
 	
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		log.debug("In FilePreviewGeneratorServlet.doGet().");
-		
-		//TODO: This is where we just check that the message from the daemon is not null.
-		String srcKey = req.getParameter("sourceKey");
-		String destKey = req.getParameter("destinationKey");
-		String srcBucketName = req.getParameter("sourceBucketName");
-		String destBucketName = req.getParameter("destinationBucketName");
-		if ((srcKey == null) || (destKey == null)) {
+		resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+		BufferedReader r = req.getReader();
+		JSONObject body = null;
+		try {
+			body = getBody(r);
+			if (body != null) {
+				log.debug("Processing request: " + body.toString());
+				generationSvc.generateFilePreview(body);
+				resp.getWriter().append("Processed request.");
+				resp.setStatus(HttpServletResponse.SC_OK);
+			} else {
+				throw new IllegalArgumentException("Body cannot be null");
+			}
+		} catch (Exception e) {
+			log.error("Exception caught processing request.", e);
+			//	TODO: Better error handling
 			resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			resp.getWriter().append("Source and destination cannot be null.");
-			resp.getWriter().close();
-		} else {
-			generationSvc.generateFilePreview(srcBucketName, srcKey, destBucketName, destKey);
-			resp.setStatus(HttpServletResponse.SC_OK);
-			resp.getWriter().append("Source: " + srcKey + ", Destination: " + destKey);
+			if (body != null) {
+				resp.getWriter().append("Could not process the request: " + body);
+			} else {
+				resp.getWriter().append("Could not process null request body");
+			}
+		} finally {
 			resp.getWriter().close();
 		}
-		
-//		//	Actual code that should run
-//		BufferedReader r = req.getReader();
-//		JSONObject body = null;
-//		try {
-//			body = getBody(r);
-//			generationSvc.generateFilePreview(body);
-//			resp.setStatus(HttpServletResponse.SC_OK);
-//			resp.getWriter().close();
-//		} catch (Exception e) {
-//			//	TODO: Better error handling
-//			resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-//			resp.getWriter().append("Could not process the request: " + body);
-//			resp.getWriter().close();
-//		}
-//	}
-//	
-//	private JSONObject getBody(BufferedReader reader) throws IOException {
-//		StringBuilder sb = new StringBuilder();
-//		try {
-//			String l;
-//			while ((l = reader.readLine()) != null)
-//				sb.append(l).append('\n');
-//		} finally {
-//			reader.close();
-//		}
-//		return new JSONObject(sb.toString());
+	}
+	
+	private JSONObject getBody(BufferedReader reader) throws IOException {
+		StringBuilder sb = new StringBuilder();
+		try {
+			String l;
+			while ((l = reader.readLine()) != null)
+				sb.append(l).append('\n');
+		} finally {
+			reader.close();
+		}
+		return new JSONObject(sb.toString());
 	}
 }

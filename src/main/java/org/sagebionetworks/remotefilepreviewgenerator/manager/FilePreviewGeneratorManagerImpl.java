@@ -10,8 +10,8 @@ import java.io.File;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import org.sagebionetworks.remotefilepreviewgenerator.dao.ImageMagickDao;
-import org.sagebionetworks.remotefilepreviewgenerator.dao.OpenOfficeDao;
+//import org.sagebionetworks.remotefilepreviewgenerator.dao.ImageMagickDao;
+//import org.sagebionetworks.remotefilepreviewgenerator.dao.OpenOfficeDao;
 
 @Singleton
 public class FilePreviewGeneratorManagerImpl implements FilePreviewGeneratorManager {
@@ -24,18 +24,18 @@ public class FilePreviewGeneratorManagerImpl implements FilePreviewGeneratorMana
 		this.amznS3Client = client;
 	}
 	
-	private ImageMagickDao imageMagickDao;
-	@Inject
-	public void setImageMagickDao(ImageMagickDao imDao) {
-		this.imageMagickDao = imDao;
-	}
-	
-	private OpenOfficeDao openOfficeDao;
-	@Inject
-	public void setOpenOfficeDao(OpenOfficeDao ooDao) {
-		this.openOfficeDao = ooDao;
-	}
-	
+//	private ImageMagickDao imageMagickDao;
+//	@Inject
+//	public void setImageMagickDao(ImageMagickDao imDao) {
+//		this.imageMagickDao = imDao;
+//	}
+//	
+//	private OpenOfficeDao openOfficeDao;
+//	@Inject
+//	public void setOpenOfficeDao(OpenOfficeDao ooDao) {
+//		this.openOfficeDao = ooDao;
+//	}
+//	
 	@Override
 	public void generateFilePreview(String srcBucketName, String srcKey, String destBucketName, String destKey) {
 		log.debug("In FilePreviewGeneratorManager.generateFilePreview().");

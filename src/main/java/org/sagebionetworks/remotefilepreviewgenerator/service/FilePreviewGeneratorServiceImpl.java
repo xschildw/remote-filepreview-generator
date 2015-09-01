@@ -25,13 +25,13 @@ public class FilePreviewGeneratorServiceImpl implements FilePreviewGeneratorServ
 	// TODO: This is where the message coming from the daemon will be upacked
 	@Override
 	public void generateFilePreview(String sourceBucketName, String sourceKey, String destinationBucketName, String destinationKey) {
-		log.debug("In FilePreviewGeneratorManager.generatePreview().");
+		log.debug("In FilePreviewGeneratorService.generatePreview().");
 		filePreviewGeneratorMgr.generateFilePreview(sourceBucketName, sourceKey, destinationBucketName, destinationKey);
 	}
 
 	@Override
 	public void generateFilePreview(JSONObject body) {
-		log.debug("In FilePreviewGeneratorManager.generatePreview().");
+		log.debug("In FilePreviewGeneratorService.generatePreview().");
 		MessagePayload p = new MessagePayload(body);
 		this.generateFilePreview(p.getSourceBucketName(), p.getSourceKey(), p.getDestinationBucketName(), p.getDestinationKey());
 	}
