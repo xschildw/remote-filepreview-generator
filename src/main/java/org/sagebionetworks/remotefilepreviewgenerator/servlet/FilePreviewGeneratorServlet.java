@@ -13,6 +13,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
 import org.sagebionetworks.remotefilepreviewgenerator.service.FilePreviewGeneratorService;
+import org.sagebionetworks.remotefilepreviewgenerator.utils.RemoteFilePreviewGeneratorUtils;
+import org.sagebionetworks.repo.model.file.RemoteFilePreviewGenerationRequest;
 
 @Singleton
 public class FilePreviewGeneratorServlet extends HttpServlet {
@@ -32,12 +34,12 @@ public class FilePreviewGeneratorServlet extends HttpServlet {
 		log.debug("In FilePreviewGeneratorServlet.doGet().");
 		resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		BufferedReader r = req.getReader();
-		JSONObject body = null;
+		RemoteFilePreviewGenerationRequest rfpgReq = null;
 		try {
-			body = getBody(r);
-			if (body != null) {
-				log.debug("Processing request: " + body.toString());
-				generationSvc.generateFilePreview(body);
+			rfpgReq = RemoteFilePreviewGeneratorUtils.getGenerationRequestFromHttpRequest(r);
+			if (rfpgReq != null) {
+				log.debug("Processing request: " + rfpgReq.toString());
+				generationSvc.generateFilePreview(rfpgReq);
 				resp.getWriter().append("Processed request.");
 				resp.setStatus(HttpServletResponse.SC_OK);
 			} else {
@@ -47,8 +49,8 @@ public class FilePreviewGeneratorServlet extends HttpServlet {
 			log.error("Exception caught processing request.", e);
 			//	TODO: Better error handling
 			resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			if (body != null) {
-				resp.getWriter().append("Could not process the request: " + body);
+			if (rfpgReq != null) {
+				resp.getWriter().append("Could not process the request: " + rfpgReq);
 			} else {
 				resp.getWriter().append("Could not process null request body");
 			}
@@ -57,15 +59,4 @@ public class FilePreviewGeneratorServlet extends HttpServlet {
 		}
 	}
 	
-	private JSONObject getBody(BufferedReader reader) throws IOException {
-		StringBuilder sb = new StringBuilder();
-		try {
-			String l;
-			while ((l = reader.readLine()) != null)
-				sb.append(l).append('\n');
-		} finally {
-			reader.close();
-		}
-		return new JSONObject(sb.toString());
-	}
 }

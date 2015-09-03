@@ -6,10 +6,10 @@ import com.google.inject.Singleton;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import org.json.JSONObject;
+import org.sagebionetworks.repo.model.file.RemoteFilePreviewGenerationRequest;
+import org.sagebionetworks.repo.model.file.S3FileHandle;
 
 import org.sagebionetworks.remotefilepreviewgenerator.manager.FilePreviewGeneratorManagerImpl;
-import org.sagebionetworks.remotefilepreviewgenerator.utils.MessagePayload;
 
 @Singleton
 public class FilePreviewGeneratorServiceImpl implements FilePreviewGeneratorService {
@@ -24,15 +24,18 @@ public class FilePreviewGeneratorServiceImpl implements FilePreviewGeneratorServ
 	
 	// TODO: This is where the message coming from the daemon will be upacked
 	@Override
-	public void generateFilePreview(String sourceBucketName, String sourceKey, String destinationBucketName, String destinationKey) {
+	public void generateFilePreview(S3FileHandle src, S3FileHandle dest) {
 		log.debug("In FilePreviewGeneratorService.generatePreview().");
-		filePreviewGeneratorMgr.generateFilePreview(sourceBucketName, sourceKey, destinationBucketName, destinationKey);
+		
+		filePreviewGeneratorMgr.generateFilePreview(src, dest);
 	}
 
 	@Override
-	public void generateFilePreview(JSONObject body) {
+	public void generateFilePreview(RemoteFilePreviewGenerationRequest req) {
 		log.debug("In FilePreviewGeneratorService.generatePreview().");
-		MessagePayload p = new MessagePayload(body);
-		this.generateFilePreview(p.getSourceBucketName(), p.getSourceKey(), p.getDestinationBucketName(), p.getDestinationKey());
+		if ((req.getSource() == null) || (req.getDestination() == null)) {
+			throw new IllegalArgumentException("Request source and destination cannot be null.");
+		}
+		this.generateFilePreview(req.getSource(), req.getDestination());
 	}
 }

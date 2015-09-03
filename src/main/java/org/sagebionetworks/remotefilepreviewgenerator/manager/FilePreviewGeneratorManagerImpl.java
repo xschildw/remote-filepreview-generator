@@ -9,6 +9,8 @@ import java.io.File;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.sagebionetworks.remotefilepreviewgenerator.utils.RemoteFilePreviewGeneratorUtils;
+import org.sagebionetworks.repo.model.file.S3FileHandle;
 
 //import org.sagebionetworks.remotefilepreviewgenerator.dao.ImageMagickDao;
 //import org.sagebionetworks.remotefilepreviewgenerator.dao.OpenOfficeDao;
@@ -39,9 +41,16 @@ public class FilePreviewGeneratorManagerImpl implements FilePreviewGeneratorMana
 	@Override
 	public void generateFilePreview(String srcBucketName, String srcKey, String destBucketName, String destKey) {
 		log.debug("In FilePreviewGeneratorManager.generateFilePreview().");
-		//	Download source file from S3
-		//	
-		
+		amznS3Client.copyObject(srcBucketName, srcKey, destBucketName, destKey);
+	}
+
+	@Override
+	public void generateFilePreview(S3FileHandle src, S3FileHandle dest) {
+		log.debug("In FilePreviewGeneratorManager.generateFilePreview().");
+		RemoteFilePreviewGeneratorUtils.validateSourceS3FileHandle(src);
+		RemoteFilePreviewGeneratorUtils.validateDestinationS3FileHandle(dest);
+		//	For now just copy the object
+		generateFilePreview(src.getBucketName(), src.getKey(), dest.getBucketName(), dest.getKey());
 	}
 	
 }

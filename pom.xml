@@ -85,6 +85,12 @@
 			<version>4.11</version>
 			<scope>test</scope>
 		</dependency>
+		<!-- models -->
+		<dependency>
+			<groupId>org.sagebionetworks</groupId>
+			<artifactId>lib-models</artifactId>
+			<version>develop-SNAPSHOT</version>
+		</dependency>
 		<!-- Might not be needed -->
 		<dependency>
 			<groupId>org.json</groupId>
