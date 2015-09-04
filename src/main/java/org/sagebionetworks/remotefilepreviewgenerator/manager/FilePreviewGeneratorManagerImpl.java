@@ -22,7 +22,7 @@ public class FilePreviewGeneratorManagerImpl implements FilePreviewGeneratorMana
 	
 	private AmazonS3Client amznS3Client;
 	@Inject
-	public void setAmazonS3Client(AmazonS3Client client) {
+	FilePreviewGeneratorManagerImpl(AmazonS3Client client) {
 		this.amznS3Client = client;
 	}
 	

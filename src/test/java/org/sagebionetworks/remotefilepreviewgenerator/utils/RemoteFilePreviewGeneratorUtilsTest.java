@@ -56,4 +56,6 @@ public class RemoteFilePreviewGeneratorUtilsTest {
 		RemoteFilePreviewGenerationRequest clone = RemoteFilePreviewGeneratorUtils.getGenerationRequestFromHttpRequest(br);
 		assertEquals(req, clone);
 	}
+	
+	
 }
