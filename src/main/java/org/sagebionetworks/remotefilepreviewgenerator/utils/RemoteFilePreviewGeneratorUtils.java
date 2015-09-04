@@ -27,12 +27,24 @@ public class RemoteFilePreviewGeneratorUtils {
 	}
 	
 	public static boolean validateSourceS3FileHandle(S3FileHandle h) {
-		//	TODO: Add validation code
+		if (h == null) {
+			throw new IllegalArgumentException("Source S3 file handle cannot be null.");
+		}
+		if ((h.getBucketName() == null) || (h.getKey() == null) || (h.getFileName() == null)) {
+			throw new IllegalArgumentException("BucketName, Key and FileName cannot be null in source S3 file handle.");
+		}
+		//	Should we also double-check content-type etc.?
 		return true;
 	}
 	
 	public static boolean validateDestinationS3FileHandle(S3FileHandle h) {
-		//	TODO: Add validation code
+		if (h == null) {
+			throw new IllegalArgumentException("Destination S3 file handle cannot be null.");
+		}
+		//	Need at least these to create an S3 object
+		if ((h.getBucketName() == null) || (h.getKey() == null) || (h.getFileName() == null)) {
+			throw new IllegalArgumentException("BucketName, Key and FileName cannot be null in destination S3 file handle.");
+		}
 		return true;
 	}
 }

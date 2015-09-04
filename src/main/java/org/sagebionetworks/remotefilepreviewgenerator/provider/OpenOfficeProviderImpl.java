@@ -1,4 +1,4 @@
-package org.sagebionetworks.remotefilepreviewgenerator.openofficeprovider;
+package org.sagebionetworks.remotefilepreviewgenerator.provider;
 
 import com.google.inject.Singleton;
 

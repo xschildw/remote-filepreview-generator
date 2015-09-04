@@ -38,8 +38,7 @@ public class FilePreviewGeneratorManagerImpl implements FilePreviewGeneratorMana
 //		this.openOfficeDao = ooDao;
 //	}
 //	
-	@Override
-	public void generateFilePreview(String srcBucketName, String srcKey, String destBucketName, String destKey) {
+	private void generateFilePreview(String srcBucketName, String srcKey, String destBucketName, String destKey) {
 		log.debug("In FilePreviewGeneratorManager.generateFilePreview().");
 		amznS3Client.copyObject(srcBucketName, srcKey, destBucketName, destKey);
 	}

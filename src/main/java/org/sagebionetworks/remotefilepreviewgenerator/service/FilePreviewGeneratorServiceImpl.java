@@ -22,20 +22,20 @@ public class FilePreviewGeneratorServiceImpl implements FilePreviewGeneratorServ
 		this.filePreviewGeneratorMgr = mgr;
 	}
 	
-	// TODO: This is where the message coming from the daemon will be upacked
-	@Override
-	public void generateFilePreview(S3FileHandle src, S3FileHandle dest) {
+	private void generateFilePreview(S3FileHandle src, S3FileHandle dest) {
 		log.debug("In FilePreviewGeneratorService.generatePreview().");
-		
+		if ((src == null) || (dest == null)) {
+			throw new IllegalArgumentException("Request source and destination cannot be null.");
+		}
 		filePreviewGeneratorMgr.generateFilePreview(src, dest);
 	}
 
 	@Override
 	public void generateFilePreview(RemoteFilePreviewGenerationRequest req) {
 		log.debug("In FilePreviewGeneratorService.generatePreview().");
-		if ((req.getSource() == null) || (req.getDestination() == null)) {
-			throw new IllegalArgumentException("Request source and destination cannot be null.");
+		if (req == null) {
+			throw new IllegalArgumentException("Request cannot be null.");
 		}
-		this.generateFilePreview(req.getSource(), req.getDestination());
+		generateFilePreview(req.getSource(), req.getDestination());
 	}
 }
