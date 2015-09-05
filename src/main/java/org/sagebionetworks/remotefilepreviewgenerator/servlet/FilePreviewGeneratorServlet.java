@@ -23,7 +23,12 @@ public class FilePreviewGeneratorServlet extends HttpServlet {
 	
 	
 	private FilePreviewGeneratorService generationSvc;
+	
 	@Inject
+	public FilePreviewGeneratorServlet(FilePreviewGeneratorService svc) {
+		this.generationSvc = svc;
+	}
+	
 	public void setFilePreviewGenerationService(FilePreviewGeneratorService svc) {
 		this.generationSvc = svc;
 	}

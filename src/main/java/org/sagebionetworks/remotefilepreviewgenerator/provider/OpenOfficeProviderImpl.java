@@ -2,14 +2,26 @@ package org.sagebionetworks.remotefilepreviewgenerator.provider;
 
 import com.google.inject.Singleton;
 
-/**
- * Encapsulates interactions with OpenOffice
- * 
- */
 @Singleton
-public class OpenOfficeProviderImpl {
+public class OpenOfficeProviderImpl implements BackendService {
 	
-	public synchronized void initialize()  throws Exception {
-		throw new UnsupportedOperationException("Not implemented yet...");
+	@Override
+	public void start() {
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
+
+	@Override
+	public void stop() {
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
+
+	@Override
+	public void restart() {
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
+
+	@Override
+	public void status() {
+		throw new UnsupportedOperationException("Not supported yet.");
 	}
 }

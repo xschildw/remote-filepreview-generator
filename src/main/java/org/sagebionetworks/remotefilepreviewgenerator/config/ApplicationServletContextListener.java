@@ -15,7 +15,9 @@ public class ApplicationServletContextListener extends GuiceServletContextListen
 	ApplicationMain main;
 	
 	public static Injector createNewGuiceInjector() {
-		return  Guice.createInjector(new FilePreviewGeneratorServletModule(), new FilePreviewGeneratorServiceModule());
+		return  Guice.createInjector(
+			new FilePreviewGeneratorServletModule(),
+			new FilePreviewGeneratorServiceModule());
 	}
 
 	@Override

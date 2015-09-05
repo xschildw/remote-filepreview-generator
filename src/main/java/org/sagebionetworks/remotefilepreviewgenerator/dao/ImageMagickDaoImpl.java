@@ -2,8 +2,18 @@ package org.sagebionetworks.remotefilepreviewgenerator.dao;
 
 import java.io.File;
 import java.io.IOException;
+import org.sagebionetworks.remotefilepreviewgenerator.provider.BackendService;
 
 public class ImageMagickDaoImpl implements ImageMagickDao {
+
+	public ImageMagickDaoImpl(BackendService prov) {
+		this.provider = prov;
+	}
+	
+	private BackendService provider;
+	public void setImageMagickProvider(BackendService p) {
+		this.provider = p;
+	}
 	
 	@Override
 	public void convertToPng(String inPath, String outPath) throws IOException {

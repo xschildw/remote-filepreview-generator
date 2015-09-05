@@ -5,6 +5,7 @@ import com.google.inject.Singleton;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.sagebionetworks.remotefilepreviewgenerator.manager.FilePreviewGeneratorManager;
 
 import org.sagebionetworks.repo.model.file.RemoteFilePreviewGenerationRequest;
 import org.sagebionetworks.repo.model.file.S3FileHandle;
@@ -16,9 +17,14 @@ public class FilePreviewGeneratorServiceImpl implements FilePreviewGeneratorServ
 
 	private static final Logger log = LogManager.getLogger(FilePreviewGeneratorServiceImpl.class);
 	
-	private FilePreviewGeneratorManagerImpl filePreviewGeneratorMgr;
+	private FilePreviewGeneratorManager filePreviewGeneratorMgr;
+	
 	@Inject
-	public void setFilePreviewGeneratorManager(FilePreviewGeneratorManagerImpl mgr) {
+	public FilePreviewGeneratorServiceImpl(FilePreviewGeneratorManager mgr) {
+		this.filePreviewGeneratorMgr = mgr;
+	}
+	
+	public void setFilePreviewGeneratorManager(FilePreviewGeneratorManager mgr) {
 		this.filePreviewGeneratorMgr = mgr;
 	}
 	

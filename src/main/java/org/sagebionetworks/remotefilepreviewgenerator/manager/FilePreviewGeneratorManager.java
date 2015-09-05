@@ -4,5 +4,5 @@ import org.sagebionetworks.repo.model.file.S3FileHandle;
 
 public interface FilePreviewGeneratorManager {
 
-	public void generateFilePreview(S3FileHandle src, S3FileHandle dest);
+	public S3FileHandle generateFilePreview(S3FileHandle src, S3FileHandle dest);
 }

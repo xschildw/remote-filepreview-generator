@@ -8,12 +8,14 @@ import java.nio.file.Paths;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import static org.junit.Assert.assertTrue;
+import org.mockito.Mockito;
+import org.sagebionetworks.remotefilepreviewgenerator.provider.BackendService;
 
 public class OpenOfficeDaoImplTest {
 	
-	public OpenOfficeDaoImpl openOfficeDao;
+	private OpenOfficeDaoImpl openOfficeDao;
+	private BackendService mockOpenOfficeSvc;
 	Path testFilePath;
 	Path testFolderPath;
 	Path testFileExistingOutput;
@@ -23,7 +25,8 @@ public class OpenOfficeDaoImplTest {
 	
 	@Before
 	public void setUp() throws URISyntaxException {
-		openOfficeDao = new OpenOfficeDaoImpl();
+		mockOpenOfficeSvc = Mockito.mock(BackendService.class);
+		openOfficeDao = new OpenOfficeDaoImpl(mockOpenOfficeSvc);
 		URL testFileUrl = this.getClass().getResource("/testFolder/openofficedao.txt");
 		testFilePath = Paths.get(testFileUrl.toURI());
 		URL testFolderUrl = this.getClass().getResource("/testFolder");

@@ -9,6 +9,8 @@ import static org.mockito.Matchers.any;
 
 import org.mockito.Mockito;
 import static org.mockito.Mockito.verify;
+import org.sagebionetworks.remotefilepreviewgenerator.dao.ImageMagickDao;
+import org.sagebionetworks.remotefilepreviewgenerator.dao.OpenOfficeDao;
 
 import org.sagebionetworks.repo.model.file.S3FileHandle;
 
@@ -16,6 +18,8 @@ public class FilePreviewGeneratorManagerTest {
 	
 	private FilePreviewGeneratorManagerImpl mgr;
 	private AmazonS3Client mockS3Client;
+	private ImageMagickDao mockImageMagickDao;
+	private OpenOfficeDao mockOpenOfficeDao;
 	
 	public FilePreviewGeneratorManagerTest() {
 	}
@@ -23,7 +27,9 @@ public class FilePreviewGeneratorManagerTest {
 	@Before
 	public void setUp() {
 		mockS3Client = Mockito.mock(AmazonS3Client.class);
-		mgr = new FilePreviewGeneratorManagerImpl(mockS3Client);
+		mockImageMagickDao = Mockito.mock(ImageMagickDao.class);
+		mockOpenOfficeDao = Mockito.mock(OpenOfficeDao.class);
+		mgr = new FilePreviewGeneratorManagerImpl(mockS3Client, mockImageMagickDao, mockOpenOfficeDao);
 	}
 	
 	@After

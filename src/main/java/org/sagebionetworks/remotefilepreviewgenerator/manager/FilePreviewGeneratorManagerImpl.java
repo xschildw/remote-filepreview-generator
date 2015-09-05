@@ -1,6 +1,7 @@
 package org.sagebionetworks.remotefilepreviewgenerator.manager;
 
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.ObjectMetadata;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -9,6 +10,8 @@ import java.io.File;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.sagebionetworks.remotefilepreviewgenerator.dao.ImageMagickDao;
+import org.sagebionetworks.remotefilepreviewgenerator.dao.OpenOfficeDao;
 import org.sagebionetworks.remotefilepreviewgenerator.utils.RemoteFilePreviewGeneratorUtils;
 import org.sagebionetworks.repo.model.file.S3FileHandle;
 
@@ -19,37 +22,44 @@ import org.sagebionetworks.repo.model.file.S3FileHandle;
 public class FilePreviewGeneratorManagerImpl implements FilePreviewGeneratorManager {
 
 	private static final Logger log = LogManager.getLogger(FilePreviewGeneratorManagerImpl.class);
+		
+	@Inject
+	public FilePreviewGeneratorManagerImpl(AmazonS3Client client,
+		ImageMagickDao imDao, OpenOfficeDao ooDao) {
+		this.amznS3Client = client;
+		
+	}
 	
 	private AmazonS3Client amznS3Client;
-	@Inject
-	FilePreviewGeneratorManagerImpl(AmazonS3Client client) {
+	public void setFilePreviewGeneratorManagerImpl(AmazonS3Client client) {
 		this.amznS3Client = client;
 	}
 	
-//	private ImageMagickDao imageMagickDao;
-//	@Inject
-//	public void setImageMagickDao(ImageMagickDao imDao) {
-//		this.imageMagickDao = imDao;
-//	}
-//	
-//	private OpenOfficeDao openOfficeDao;
-//	@Inject
-//	public void setOpenOfficeDao(OpenOfficeDao ooDao) {
-//		this.openOfficeDao = ooDao;
-//	}
-//	
-	private void generateFilePreview(String srcBucketName, String srcKey, String destBucketName, String destKey) {
+	private ImageMagickDao imageMagickDao;
+	public void setImageMagickDao(ImageMagickDao imDao) {
+		this.imageMagickDao = imDao;
+	}
+	
+	private OpenOfficeDao openOfficeDao;
+	public void setOpenOfficeDao(OpenOfficeDao ooDao) {
+		this.openOfficeDao = ooDao;
+	}
+	
+	private S3FileHandle generateFilePreview(String srcBucketName, String srcKey, String destBucketName, String destKey) {
 		log.debug("In FilePreviewGeneratorManager.generateFilePreview().");
 		amznS3Client.copyObject(srcBucketName, srcKey, destBucketName, destKey);
+		ObjectMetadata omd = amznS3Client.getObjectMetadata(destBucketName, destKey);
+		return null;
 	}
 
 	@Override
-	public void generateFilePreview(S3FileHandle src, S3FileHandle dest) {
+	public S3FileHandle generateFilePreview(S3FileHandle src, S3FileHandle dest) {
 		log.debug("In FilePreviewGeneratorManager.generateFilePreview().");
 		RemoteFilePreviewGeneratorUtils.validateSourceS3FileHandle(src);
 		RemoteFilePreviewGeneratorUtils.validateDestinationS3FileHandle(dest);
 		//	For now just copy the object
 		generateFilePreview(src.getBucketName(), src.getKey(), dest.getBucketName(), dest.getKey());
+		return null;
 	}
 	
 }

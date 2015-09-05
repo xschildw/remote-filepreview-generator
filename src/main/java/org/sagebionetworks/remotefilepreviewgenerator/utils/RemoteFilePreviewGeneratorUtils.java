@@ -1,5 +1,6 @@
 package org.sagebionetworks.remotefilepreviewgenerator.utils;
 
+import com.amazonaws.services.s3.model.ObjectMetadata;
 import java.io.BufferedReader;
 import java.io.IOException;
 import org.sagebionetworks.repo.model.file.RemoteFilePreviewGenerationRequest;

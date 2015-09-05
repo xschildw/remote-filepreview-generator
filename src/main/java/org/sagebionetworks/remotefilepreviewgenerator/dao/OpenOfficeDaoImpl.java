@@ -2,8 +2,18 @@ package org.sagebionetworks.remotefilepreviewgenerator.dao;
 
 import java.io.File;
 import java.io.IOException;
+import org.sagebionetworks.remotefilepreviewgenerator.provider.BackendService;
 
 public class OpenOfficeDaoImpl implements OpenOfficeDao {
+	
+	public OpenOfficeDaoImpl(BackendService prov) {
+		this.provider = prov;
+	}
+	
+	private BackendService provider;
+	public void setOpenOfficeProvider(BackendService p) {
+		this.provider = p;
+	}
 	
 	@Override
 	public void convertToPdf(String inPath, String outPath) throws IOException {
