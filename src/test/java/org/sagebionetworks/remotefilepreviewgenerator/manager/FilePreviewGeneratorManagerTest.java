@@ -1,14 +1,17 @@
 package org.sagebionetworks.remotefilepreviewgenerator.manager;
 
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.ObjectMetadata;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
 
 import org.mockito.Mockito;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import org.sagebionetworks.remotefilepreviewgenerator.dao.ImageMagickDao;
 import org.sagebionetworks.remotefilepreviewgenerator.dao.OpenOfficeDao;
 
@@ -65,6 +68,10 @@ public class FilePreviewGeneratorManagerTest {
 		mgr.generateFilePreview(src, dest);
 	}
 	
+	/**
+	 * Temp test, no need for complicated checks
+	 * TODO:	Move no-op to DAOs and check all the way through
+	 */
 	@Test
 	public void testGenerateFilePreview() {
 		S3FileHandle src = new S3FileHandle();
@@ -73,8 +80,11 @@ public class FilePreviewGeneratorManagerTest {
 		src.setFileName("file");
 		S3FileHandle dest = new S3FileHandle();
 		dest.setBucketName("DEST");
-		dest.setKey("key");
+		dest.setKey("dest");
 		dest.setFileName("file");
+		ObjectMetadata expectedOmd = new ObjectMetadata();
+		expectedOmd.setContentDisposition("file");
+		when(mockS3Client.getObjectMetadata(anyString(), anyString())).thenReturn(expectedOmd);
 		mgr.generateFilePreview(src, dest);
 		verify(mockS3Client).copyObject(any(String.class),any(String.class),any(String.class),any(String.class));
 	}

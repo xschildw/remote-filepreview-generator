@@ -45,11 +45,11 @@ public class FilePreviewGeneratorManagerImpl implements FilePreviewGeneratorMana
 		this.openOfficeDao = ooDao;
 	}
 	
-	private S3FileHandle generateFilePreview(String srcBucketName, String srcKey, String destBucketName, String destKey) {
+	private ObjectMetadata generateFilePreview(String srcBucketName, String srcKey, String destBucketName, String destKey) {
 		log.debug("In FilePreviewGeneratorManager.generateFilePreview().");
 		amznS3Client.copyObject(srcBucketName, srcKey, destBucketName, destKey);
 		ObjectMetadata omd = amznS3Client.getObjectMetadata(destBucketName, destKey);
-		return null;
+		return omd;
 	}
 
 	@Override
@@ -58,8 +58,9 @@ public class FilePreviewGeneratorManagerImpl implements FilePreviewGeneratorMana
 		RemoteFilePreviewGeneratorUtils.validateSourceS3FileHandle(src);
 		RemoteFilePreviewGeneratorUtils.validateDestinationS3FileHandle(dest);
 		//	For now just copy the object
-		generateFilePreview(src.getBucketName(), src.getKey(), dest.getBucketName(), dest.getKey());
-		return null;
+		ObjectMetadata o = generateFilePreview(src.getBucketName(), src.getKey(), dest.getBucketName(), dest.getKey());
+		dest = RemoteFilePreviewGeneratorUtils.initS3FileHandle(o, dest);
+		return dest;
 	}
 	
 }

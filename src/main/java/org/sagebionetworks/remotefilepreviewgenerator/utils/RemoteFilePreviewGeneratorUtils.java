@@ -48,4 +48,11 @@ public class RemoteFilePreviewGeneratorUtils {
 		}
 		return true;
 	}
+	
+	public static S3FileHandle initS3FileHandle(ObjectMetadata o, S3FileHandle h) {
+		h.setContentMd5(o.getContentMD5());
+		h.setContentType(o.getContentType());
+		h.setFileName(o.getContentDisposition());
+		return h;
+	}
 }

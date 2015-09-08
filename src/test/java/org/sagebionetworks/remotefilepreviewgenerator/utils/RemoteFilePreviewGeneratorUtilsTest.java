@@ -1,5 +1,6 @@
 package org.sagebionetworks.remotefilepreviewgenerator.utils;
 
+import com.amazonaws.services.s3.model.ObjectMetadata;
 import java.io.BufferedReader;
 import java.io.StringReader;
 import org.json.JSONException;
@@ -57,5 +58,23 @@ public class RemoteFilePreviewGeneratorUtilsTest {
 		assertEquals(req, clone);
 	}
 	
-	
+	@Test
+	public void testInitS3FileHandle() {
+		S3FileHandle h = new S3FileHandle();
+		h.setBucketName("BUCKET");
+		h.setKey("key");
+		h.setFileName("filename");
+		assertNull(h.getContentMd5());
+		assertNotNull(h.getFileName());
+		ObjectMetadata o = new ObjectMetadata();
+		o.setContentDisposition("preview");
+		assertNotEquals(h.getFileName(), o.getContentDisposition());
+		o.setContentMD5("md5");
+		o.setContentLength(100);
+		o.setContentType("pmg");
+		h = RemoteFilePreviewGeneratorUtils.initS3FileHandle(o, h);
+		assertEquals(o.getContentDisposition(), h.getFileName());
+		assertEquals(o.getContentMD5(), h.getContentMd5());
+		
+	}
 }
