@@ -1,17 +1,27 @@
 package org.sagebionetworks.remotefilepreviewgenerator.dao;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import java.io.File;
 import java.io.IOException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.sagebionetworks.remotefilepreviewgenerator.provider.BackendService;
+import org.sagebionetworks.remotefilepreviewgenerator.provider.ImageMagickProviderImpl;
 
+@Singleton
 public class ImageMagickDaoImpl implements ImageMagickDao {
 
+	private static final Logger log = LogManager.getLogger(ImageMagickDaoImpl.class);
+
+	@Inject
 	public ImageMagickDaoImpl(BackendService prov) {
-		this.provider = prov;
+		this.setImageMagickProvider(prov);
 	}
 	
 	private BackendService provider;
 	public void setImageMagickProvider(BackendService p) {
+		log.debug("ImageMagickDaoImpl.setImageMagickProvider.");
 		this.provider = p;
 	}
 	

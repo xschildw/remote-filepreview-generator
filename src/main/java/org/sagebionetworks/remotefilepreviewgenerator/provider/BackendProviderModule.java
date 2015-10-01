@@ -1,4 +1,4 @@
-package org.sagebionetworks.remotefilepreviewgenerator.provider;
+		package org.sagebionetworks.remotefilepreviewgenerator.provider;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
@@ -13,13 +13,4 @@ public class BackendProviderModule extends AbstractModule {
 		
 	}
 	
-	@Provides @Singleton
-	public BackendService getImageMagickProvider() {
-		return new ImageMagickProviderImpl();
-	}
-	
-	@Provides @Singleton
-	public BackendService getOpenOfficeProvider() {
-		return new OpenOfficeProviderImpl();
-	}
 }
