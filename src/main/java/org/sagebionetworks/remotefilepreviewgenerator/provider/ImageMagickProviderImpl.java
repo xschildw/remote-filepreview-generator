@@ -24,22 +24,26 @@ public class ImageMagickProviderImpl implements BackendService {
 	}
 	
 	public void start() {
-		throw new UnsupportedOperationException("Not supported yet.");
+		throw new UnsupportedOperationException("Not supported.");
 	}
 
 	@Override
 	public void stop() {
-		throw new UnsupportedOperationException("Not supported yet.");
+		throw new UnsupportedOperationException("Not supported.");
 	}
 
 	@Override
 	public void restart() {
-		throw new UnsupportedOperationException("Not supported yet.");
+		this.stop();
+		this.start();
 	}
 
 	@Override
 	public void status() {
-		throw new UnsupportedOperationException("Not supported yet.");
+		throw new UnsupportedOperationException("Not supported.");
 	}
 	
+	public void info() {
+		System.out.println(config.getProperty("org.sagebionetworks.remote.filepreview.generator.execpath.imagemagick"));
+	}
 }

@@ -2,9 +2,6 @@ package org.sagebionetworks.remotefilepreviewgenerator.config;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Properties;
 
 import org.jdom.JDOMException;
@@ -17,7 +14,7 @@ public class ConfigurationImpl implements Configuration {
 	private static final String CONFIGURATION_PROPERTIES = "configuration.properties";
 	Properties properties;
 	
-	ConfigurationImpl() throws IOException, JDOMException{
+	public ConfigurationImpl() throws IOException, JDOMException{
 		// First load the configuration properties.
 		properties = new Properties();
 		InputStream in = this.getClass().getClassLoader().getResourceAsStream(CONFIGURATION_PROPERTIES);

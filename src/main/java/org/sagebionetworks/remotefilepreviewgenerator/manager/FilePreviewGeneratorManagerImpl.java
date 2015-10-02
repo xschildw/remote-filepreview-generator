@@ -47,6 +47,7 @@ public class FilePreviewGeneratorManagerImpl implements FilePreviewGeneratorMana
 	
 	private ObjectMetadata generateFilePreview(String srcBucketName, String srcKey, String destBucketName, String destKey) {
 		log.debug("In FilePreviewGeneratorManager.generateFilePreview().");
+		// Copy source file from  S3
 		amznS3Client.copyObject(srcBucketName, srcKey, destBucketName, destKey);
 		ObjectMetadata omd = amznS3Client.getObjectMetadata(destBucketName, destKey);
 		return omd;
