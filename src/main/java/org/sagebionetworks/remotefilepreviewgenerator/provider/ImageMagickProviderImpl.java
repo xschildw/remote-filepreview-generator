@@ -2,6 +2,7 @@ package org.sagebionetworks.remotefilepreviewgenerator.provider;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import java.io.File;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.sagebionetworks.remotefilepreviewgenerator.config.Configuration;
@@ -9,7 +10,7 @@ import org.sagebionetworks.remotefilepreviewgenerator.config.Configuration;
 @Singleton
 public class ImageMagickProviderImpl implements BackendService {
 	
-	private static final Logger log = LogManager.getLogger(ImageMagickProviderImpl.class);
+	private static final Logger logger = LogManager.getLogger(ImageMagickProviderImpl.class);
 
 	private Configuration config;
 	
@@ -19,7 +20,7 @@ public class ImageMagickProviderImpl implements BackendService {
 	}
 	
 	public void setConfiguration(Configuration cfg) {
-		log.debug("ImageMagickProviderImpl.setConfiguration.");
+		logger.debug("ImageMagickProviderImpl.setConfiguration.");
 		this.config = cfg;
 	}
 	
@@ -45,5 +46,13 @@ public class ImageMagickProviderImpl implements BackendService {
 	
 	public void info() {
 		System.out.println(config.getProperty("org.sagebionetworks.remote.filepreview.generator.execpath.imagemagick"));
+	}
+	
+	@Override
+	public boolean isInstalled() {
+		String path = config.getProperty("org.sagebionetworks.remote.filepreview.generator.execpath.imagemagick")
+			+ config.getProperty("org.sagebionetworks.remote.filepreview.generator.execname.imagemagick");
+		File f = new File(path);
+		return f.exists();
 	}
 }

@@ -1,6 +1,9 @@
 package org.sagebionetworks.remotefilepreviewgenerator.provider;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URL;
+import java.util.Properties;
 import org.jdom.JDOMException;
 import org.junit.After;
 import org.junit.Before;
@@ -19,6 +22,12 @@ public class ImageMagickProviderImplTest {
 	
 	@Before
 	public void setUp() throws IOException, JDOMException {
+		URL url = this.getClass().getResource("imagemagickExec");
+		String fPath = "";
+		fPath = fPath.substring(0, fPath.lastIndexOf("/"));
+		Properties props = System.getProperties();
+		props.put("org.sagebionetworks.remote.filepreview.generator.imagemagick.path", fPath);
+		props.put("org.sagebionetworks.remote.filepreview.generator.imagemagick.name", "imagemagickExec");
 		config = new ConfigurationImpl();
 		provider = new ImageMagickProviderImpl(config);
 	}
@@ -50,6 +59,11 @@ public class ImageMagickProviderImplTest {
 	@Test(expected=UnsupportedOperationException.class)
 	public void testStatus() {
 		provider.status();
+	}
+	
+	@Test
+	public void testIsInstalledInstalled() {
+		assertTrue(provider.isInstalled());
 	}
 	
 	@Test

@@ -2,6 +2,7 @@ package org.sagebionetworks.remotefilepreviewgenerator.provider;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import java.io.File;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.sagebionetworks.remotefilepreviewgenerator.config.Configuration;
@@ -41,4 +42,12 @@ public class OpenOfficeProviderImpl implements BackendService {
 	public void status() {
 		throw new UnsupportedOperationException("Not supported yet.");
 	}
+
+	@Override
+	public boolean isInstalled() {
+		String path = config.getProperty("org.sagebionetworks.remote.filepreview.generator.execpath.openoffice") + "/"
+			+ config.getProperty("org.sagebionetworks.remote.filepreview.generator.execname.openoffice");
+		File f = new File(path);
+		return f.exists();	}
+
 }

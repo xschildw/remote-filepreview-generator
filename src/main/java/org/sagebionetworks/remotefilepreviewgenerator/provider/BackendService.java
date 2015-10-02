@@ -6,5 +6,6 @@ public interface BackendService {
 	public void stop();
 	public void restart();
 	public void status();
+	public boolean isInstalled();
 
 }
