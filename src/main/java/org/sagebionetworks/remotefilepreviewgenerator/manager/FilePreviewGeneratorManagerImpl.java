@@ -5,8 +5,6 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.google.common.io.Files;
-import java.io.File;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
