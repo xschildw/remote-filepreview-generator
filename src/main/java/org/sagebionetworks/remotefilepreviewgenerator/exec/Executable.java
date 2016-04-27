@@ -1,10 +1,10 @@
 package org.sagebionetworks.remotefilepreviewgenerator.exec;
 
-import java.io.IOException;
 import java.util.List;
+import org.apache.commons.exec.ExecuteResultHandler;
 
 public interface Executable {
 	public boolean isInstalled();
-	public int run(List<String> args, Long timeoutMs) throws Exception;
+	public ExecuteResultHandler run(List<String> args, Long timeoutMs, ExecuteResultHandler handler) throws Exception;
 	public void kill();
 }

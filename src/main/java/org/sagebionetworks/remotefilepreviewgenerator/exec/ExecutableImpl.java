@@ -1,30 +1,21 @@
 package org.sagebionetworks.remotefilepreviewgenerator.exec;
 
-import com.google.inject.Inject;
 import java.io.File;
 import java.util.List;
-
-import org.apache.logging.log4j.LogManager;
-
 import org.apache.commons.exec.CommandLine;
-import org.apache.commons.exec.DefaultExecuteResultHandler;
 import org.apache.commons.exec.DefaultExecutor;
+import org.apache.commons.exec.ExecuteResultHandler;
 import org.apache.commons.exec.ExecuteWatchdog;
 import org.apache.commons.exec.Executor;
-
-import org.sagebionetworks.repo.model.semaphore.MemoryCountingSemaphore;
-
+import org.apache.logging.log4j.LogManager;
 
 public class ExecutableImpl implements Executable {
 	private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger(ExecutableImpl.class);
 	
-	private MemoryCountingSemaphore sema;
 	private String executablePath;
 	
-	@Inject
-	public ExecutableImpl(String path, MemoryCountingSemaphore sema) {
-		this.executablePath = path;
-		this.sema = sema;
+	public ExecutableImpl(String executablePath) {
+		this.executablePath = executablePath;
 	}
 	
 	public String getExecutablePath() {
@@ -42,35 +33,20 @@ public class ExecutableImpl implements Executable {
 	}
 
 	@Override
-	public int run(List<String> args, Long timeoutMs) throws Exception {
-		logger.debug("Executing run() on " + this.executablePath);
-		
-		String token = sema.attemptToAcquireLock(executablePath, timeoutMs/1000+1, 1);
-		if (token == null) {
-			throw new RuntimeException("Could not acquire lock " + executablePath);
-		}
-		
+	public ExecuteResultHandler run(List<String> args, Long timeoutMs, ExecuteResultHandler handler) throws Exception {
 		CommandLine cmdLine = new CommandLine(this.executablePath);
 		for (String arg: args) {
 			cmdLine.addArgument(arg);
 		}
-		DefaultExecuteResultHandler resultHandler = new DefaultExecuteResultHandler();
+
 		ExecuteWatchdog watchDog = new ExecuteWatchdog(timeoutMs);
 		Executor executor = new DefaultExecutor();
 		executor.setExitValue(0);
 		executor.setWatchdog(watchDog);
 		
-		executor.execute(cmdLine, resultHandler);
+		executor.execute(cmdLine, handler);
 		
-		resultHandler.waitFor();
-
-		sema.releaseLock(executablePath, token);
-		
-		if (resultHandler.getException() != null) {
-			throw resultHandler.getException();
-		}
-		int exitCode = resultHandler.getExitValue();
-		return exitCode;
+		return handler;
 	}
 
 	@Override
